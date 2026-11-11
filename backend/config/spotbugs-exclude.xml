@@ -7,4 +7,13 @@
 
      Unlike the baseline, this file may grow, but every entry is a reviewed decision. -->
 <FindBugsFilter>
+    <!-- EI_EXPOSE_REP / EI_EXPOSE_REP2 turned off project-wide. Project Pulse's mutable shared
+         objects are of two kinds, and for both, sharing the reference is the design:
+         1. JPA entities. Hibernate tracks changes through the live collection instance the entity
+            holds, and 16 production call sites change entity collections through their getters
+            (e.g. TeamService.transferTeam, UseCaseService). Returning copies would make those
+            changes silently not persist, and 9 of the collections use orphanRemoval, where
+            replacing the instance breaks Hibernate.
+         2. Spring singletons injected through constructors, which the container shares by design. -->
+    <Match><Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/></Match>
 </FindBugsFilter>
