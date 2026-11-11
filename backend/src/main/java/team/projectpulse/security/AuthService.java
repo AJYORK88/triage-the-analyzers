@@ -9,6 +9,7 @@ import team.projectpulse.student.converter.StudentToStudentDtoConverter;
 import team.projectpulse.student.dto.StudentDto;
 import team.projectpulse.user.MyUserPrincipal;
 import team.projectpulse.user.PeerEvaluationUser;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -41,18 +42,22 @@ public class AuthService {
 
         Map<String, Object> loginResultMap = new HashMap<>();
 
-        if (peerEvaluationUser.getRoles().equals("student")) {
+        String roles = peerEvaluationUser.getRoles(); // May be null: the column is nullable.
+        if ("student".equals(roles)) {
             StudentDto studentDto = this.studentToStudentDtoConverter.convert((Student) peerEvaluationUser);
             // Create a JWT.
             String token = this.jwtProvider.createToken(authentication);
             loginResultMap.put("userInfo", studentDto);
             loginResultMap.put("token", token);
-        } else if (peerEvaluationUser.getRoles().contains("instructor")) {
+        } else if (roles != null && roles.contains("instructor")) {
             InstructorDto instructorDto = this.instructorToInstructorDtoConverter.convert((Instructor) peerEvaluationUser);
             // Create a JWT.
             String token = this.jwtProvider.createToken(authentication);
             loginResultMap.put("userInfo", instructorDto);
             loginResultMap.put("token", token);
+        } else {
+            // No usable role: refuse the login (403 via ExceptionHandlerAdvice) rather than crash or answer 200 with no token.
+            throw new AccessDeniedException("This account has no role that can log in.");
         }
         return loginResultMap;
     }
