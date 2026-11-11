@@ -321,7 +321,7 @@ public class SecurityConfiguration {
 
                         .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // NOPMD - reviewed, dismissed CodeQL alert java/spring-disabled-csrf-protection (stateless, Bearer tokens, no session cookie); a cosmetic rewrite of a security-reviewed line adds review churn for no behavior change
                 .cors(Customizer.withDefaults())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.customBasicAuthenticationEntryPoint))
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
