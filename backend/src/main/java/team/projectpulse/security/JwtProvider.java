@@ -1,5 +1,6 @@
 package team.projectpulse.security;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import team.projectpulse.user.MyUserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -21,6 +22,10 @@ public class JwtProvider {
         this.jwtEncoder = jwtEncoder;
     }
 
+    @SuppressFBWarnings(
+            value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE",
+            justification = "Both callers of createToken (in AuthService.createLoginInfo) have already cast and "
+                    + "dereferenced the same principal before this call, so a null cannot reach it.")
     public String createToken(Authentication authentication) {
         Instant now = Instant.now();
         long expiresIn = 2; // 2 hours
