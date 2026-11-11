@@ -28,6 +28,7 @@ public class ArtifactKeySequence {
 
 
     public ArtifactKeySequence() {
+        // Required by JPA.
     }
 
     public ArtifactKeySequence(Team team, RequirementArtifactType type) {

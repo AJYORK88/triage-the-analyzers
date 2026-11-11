@@ -19,6 +19,7 @@ public class UseCaseExtensionStep {
 
 
     public UseCaseExtensionStep() {
+        // Required by JPA.
     }
 
     public UseCaseExtensionStep(String actor, String actionText) {

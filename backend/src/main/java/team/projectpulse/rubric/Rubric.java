@@ -25,6 +25,7 @@ public class Rubric {
 
 
     public Rubric() {
+        // Required by JPA.
     }
 
     public Rubric(String rubricName) {

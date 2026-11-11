@@ -33,6 +33,7 @@ public class Course {
     private List<Rubric> rubrics = new ArrayList<>();
 
     public Course() {
+        // Required by JPA.
     }
 
     public Course(String courseName, String courseDescription) {

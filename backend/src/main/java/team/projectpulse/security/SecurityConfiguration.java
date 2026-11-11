@@ -1,6 +1,7 @@
 package team.projectpulse.security;
 
 import com.nimbusds.jose.jwk.JWK;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -99,6 +100,12 @@ public class SecurityConfiguration {
     private final StudentInstructorAuthorizationManager studentInstructorAuthorizationManager;
 
 
+    @SuppressFBWarnings(
+            value = "CT_CONSTRUCTOR_THROW",
+            justification = "The only checked exception is NoSuchAlgorithmException from KeyPairGenerator "
+                    + "\"RSA\", which every Java SE implementation is required to provide, so it cannot occur. "
+                    + "The tool's fix (make the class final) is refused: a @Configuration class may not be "
+                    + "final, because Spring proxies it.")
     public SecurityConfiguration(CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint, CustomBearerTokenAuthenticationEntryPoint customBearerTokenAuthenticationEntryPoint, CustomBearerTokenAccessDeniedHandler customBearerTokenAccessDeniedHandler, UserOwnershipAuthorizationManager userOwnershipAuthorizationManager, CourseOwnershipAuthorizationManager courseOwnershipAuthorizationManager, CourseMembershipAuthorizationManager courseMembershipAuthorizationManager, CriterionOwnershipAuthorizationManager criterionOwnershipAuthorizationManager, RubricOwnershipAuthorizationManager rubricOwnershipAuthorizationManager, CriterionMembershipAuthorizationManager criterionMembershipAuthorizationManager, RubricMembershipAuthorizationManager rubricMembershipAuthorizationManager, AssignCriterionToRubricAuthorizationManager assignCriterionToRubricAuthorizationManager, SectionMembershipAuthorizationManager sectionMembershipAuthorizationManager, SectionOwnershipAuthorizationManager sectionOwnershipAuthorizationManager, AssignRubricToSectionAuthorizationManager assignRubricToSectionAuthorizationManager, AssignInstructorToSectionAuthorizationManager assignInstructorToSectionAuthorizationManager, TeamMembershipAuthorizationManager teamMembershipAuthorizationManager, TeamOwnershipAuthorizationManager teamOwnershipAuthorizationManager, AssignStudentToTeamAuthorizationManager assignStudentToTeamAuthorizationManager, AssignInstructorToTeamAuthorizationManager assignInstructorToTeamAuthorizationManager, TransferTeamAuthorizationManager transferTeamAuthorizationManager, ActivityOwnershipAuthorizationManager activityOwnershipAuthorizationManager, ActivityMembershipAuthorizationManager activityMembershipAuthorizationManager, EvaluationOwnershipAuthorizationManager evaluationOwnershipAuthorizationManager, SectionInstructorAuthorizationManager sectionInstructorAuthorizationManager, StudentInstructorAuthorizationManager studentInstructorAuthorizationManager) throws NoSuchAlgorithmException {
         this.customBasicAuthenticationEntryPoint = customBasicAuthenticationEntryPoint;
         this.customBearerTokenAuthenticationEntryPoint = customBearerTokenAuthenticationEntryPoint;
@@ -314,7 +321,7 @@ public class SecurityConfiguration {
 
                         .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // NOPMD - reviewed, dismissed CodeQL alert java/spring-disabled-csrf-protection (stateless, Bearer tokens, no session cookie); a cosmetic rewrite of a security-reviewed line adds review churn for no behavior change
                 .cors(Customizer.withDefaults())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.customBasicAuthenticationEntryPoint))
                 .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer

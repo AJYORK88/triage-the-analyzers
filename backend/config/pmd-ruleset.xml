@@ -13,5 +13,10 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
     <description>PMD quickstart, with Project Pulse's decisions.</description>
     <rule ref="rulesets/java/quickstart.xml">
+        <!-- GuardLogStatement turned off. Logging is SLF4J with {} placeholders, which already
+             defer message formatting when the level is off. 3 of the 4 flagged calls are at
+             ERROR/INFO, which are always enabled by default, and the arguments are cheap getters
+             and size() calls, so an isXEnabled() guard would buy nothing. -->
+        <exclude name="GuardLogStatement"/>
     </rule>
 </ruleset>
