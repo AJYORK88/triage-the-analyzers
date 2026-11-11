@@ -16,6 +16,7 @@ public class Result {
 
 
     public Result() {
+        // No-arg constructor for JavaBean tools such as Jackson; every field has a setter.
     }
 
     public Result(boolean flag, Integer code, String message) {

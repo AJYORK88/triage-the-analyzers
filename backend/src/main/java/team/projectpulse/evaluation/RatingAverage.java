@@ -7,6 +7,7 @@ public class RatingAverage {
 
 
     public RatingAverage() {
+        // No-arg constructor for JavaBean tools such as Jackson; every field has a setter.
     }
 
     public RatingAverage(Integer criterionId, Double averageScore) {

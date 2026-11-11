@@ -32,9 +32,6 @@ public class DocumentSectionLock {
     private Integer version;
 
 
-    public DocumentSectionLock() {
-    }
-
     public boolean isLocked(Instant now) {
         if (lockedAt == null) return false;
         if (expiresAt == null) return true;

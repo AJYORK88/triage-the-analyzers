@@ -26,6 +26,7 @@ public class Team {
 
 
     public Team() {
+        // Required by JPA.
     }
 
     public Team(String teamName, String description, String teamWebsiteUrl) {
