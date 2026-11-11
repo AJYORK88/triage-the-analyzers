@@ -41,7 +41,7 @@ public class JwtProvider {
                 .issuedAt(now)
                 .expiresAt(now.plus(expiresIn, ChronoUnit.HOURS))
                 .subject(authentication.getName())
-                .claim("userId", ((MyUserPrincipal) (authentication.getPrincipal())).getPeerEvaluationUser().getId())
+                .claim("userId", ((MyUserPrincipal) authentication.getPrincipal()).getPeerEvaluationUser().getId())
                 .claim("authorities", authorities)
                 .build();
 
