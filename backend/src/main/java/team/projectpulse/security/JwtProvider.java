@@ -3,6 +3,7 @@ package team.projectpulse.security;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import team.projectpulse.user.MyUserPrincipal;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -32,7 +33,7 @@ public class JwtProvider {
 
         // Prepare a claim called authorities.
         String authorities = authentication.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));// MUST BE space-delimited.
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
